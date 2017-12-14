@@ -104,19 +104,23 @@
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
     var uniqArray=[];
+    var truthyArray=array;
+    if (iterator !== null && iterator !== undefined){
+      truthyArray = truthyArray.map(iterator);
+      var iterateArray=[];
+      for(var j = 0; j < array.length; j++){
+        if (_.indexOf(iterateArray, truthyArray[j]) === -1){
+          iterateArray.push(truthyArray[j]);
+          uniqArray.push(array[j]);
+        }
+      }
+      return uniqArray.sort();
+    }
+
     for(var i = 1; i < array.length; i++){
       if (_.indexOf(uniqArray, array[i]) === -1 ){
         uniqArray.push(array[i]);
       }
-    }
-    if (iterator !== null && iterator !== undefined){
-      var filterArray=[];
-      for(var i=0; i<uniqArray.length; i++){
-        if(iterator(uniqArray[i])){
-          filterArray.push(uniqArr[i]);
-        }
-      }
-      uniqArray=filterArray;
     }
     return uniqArray.sort();
   };
