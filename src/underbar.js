@@ -303,7 +303,7 @@
         result = func.apply(this, arguments);
         alreadyCalled = true;
       }
-      // The new function always returns the originally computed result.
+      // The new function always returns the originally computed result. n
       return result;
     };
   };
@@ -317,7 +317,20 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-  };
+    var result={};
+    return function(key){
+      var totalKey = [];
+      for(var i = 0; i < arguments.length; i++){
+        totalKey[i] = arguments[i];
+      }
+      totalKey.join('');
+      totalKey+= typeof key;
+      if(!(totalKey in result)){
+        result[totalKey]= func.apply(this,arguments);
+      }
+      return result[totalKey];
+    };
+  }
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
